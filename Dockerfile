@@ -2,6 +2,7 @@ FROM ruby:3.4.7
 
 RUN apt-get update -qq && apt-get install -y \
     libpq-dev \
+    postgresql-client \
     build-essential \
     curl \
     && rm -rf /var/lib/apt/lists/*
