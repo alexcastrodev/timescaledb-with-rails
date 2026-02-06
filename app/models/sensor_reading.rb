@@ -1,6 +1,6 @@
-class SensorReading < ApplicationRecord
-  self.primary_key = :time
+class SensorReading < Hypertable
+  acts_as_hypertable time_column: "time_at", segment_by: "device_id"
 
-  validates :time, presence: true
+  validates :time_at, presence: true
   validates :device_id, presence: true
 end
