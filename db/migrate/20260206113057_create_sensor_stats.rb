@@ -20,6 +20,6 @@ class CreateSensorStats < ActiveRecord::Migration[8.1]
   end
 
   def down
-    drop_continuous_aggregate(:sensor_stats)
+    drop_continuous_aggregates(:sensor_stats)
   end
 end
