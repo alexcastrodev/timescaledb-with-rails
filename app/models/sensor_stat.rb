@@ -1,0 +1,2 @@
+class SensorStat < ApplicationRecord
+end

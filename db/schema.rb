@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_06_102100) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_06_113057) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "timescaledb"
@@ -29,4 +29,21 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_06_102100) do
   create_hypertable "sensor_readings", time_column: "time_at", chunk_time_interval: "1 day", compress_segmentby: "device_id", compress_orderby: "time_at DESC", compress_after: "P7D"
 
   create_retention_policy "sensor_readings", drop_after: "P90D"
+  create_continuous_aggregate("sensor_stats", <<-SQL, materialized_only: true, finalized: true)
+    SELECT time_bucket('PT15M'::interval, time_at) AS time_at,
+      device_id,
+      avg(temperature) AS avg_temperature,
+      min(temperature) AS min_temperature,
+      max(temperature) AS max_temperature,
+      avg(humidity) AS avg_humidity,
+      min(humidity) AS min_humidity,
+      max(humidity) AS max_humidity,
+      avg(voltage) AS avg_voltage,
+      min(voltage) AS min_voltage,
+      max(voltage) AS max_voltage,
+      count(*) AS sample_count
+     FROM sensor_readings
+    GROUP BY (time_bucket('PT15M'::interval, time_at)), device_id
+  SQL
+
 end

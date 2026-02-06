@@ -65,8 +65,11 @@ group :test do
   gem "selenium-webdriver"
 end
 
-
-# TimescaleDB helpers for Rails
-gem "timescaledb"
-# Use postgresql for secondary database
+# =============================
+# TimescaleDB support
+# =============================
 gem "pg"
+# https://github.com/timescale/timescaledb-ruby
+gem "timescaledb"
+# https://github.com/scenic-views/scenic
+# gem "scenic"
